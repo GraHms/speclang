@@ -28,17 +28,18 @@ Speclang is a proposed language designed specifically for compiling OpenAPI spec
 @uri("/products")
 endpoint Product {
 
-		@uri("/")
-		get allProducts() {
+ @uri("/")
+ get allProducts() {
 
-				// Define the query for retrieving all products
-		}
-
-		@uri("/{id}")
-		post addProduct(@body ProductInput input) {
-				// Define the query for adding a new product
-			}
-		}
+	# Define the query for retrieving all products
+ }
+ 
+ @uri("/{id}")
+ post addProduct(@body ProductInput input) {
+				
+	# Define the query for adding a new product
+ }
+}
 
 
 type Product {
