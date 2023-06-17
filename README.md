@@ -25,26 +25,26 @@ Speclang is a proposed language designed specifically for compiling OpenAPI spec
 ```
 // product.spc
 
-@module("/products")
-module ProductModule {
+@uri("/products")
+endpoint Product {
 
-    @endpoint("/")
-    getProducts() {
-        // Define the query for retrieving all products
-        // ...
-    }
+		@uri("/")
+		get allProducts() {
 
-    @endpoint("/{id}")
-    getProductById(@param("id") string id) {
-        // Define the query for retrieving a product by ID
-        // ...
-    }
+				// Define the query for retrieving all products
+		}
 
-    type Product {
-        name string "binding:json, required"
-        description string "binding:json, required"
-        price float64 "binding:json, required"
-    }
+		@uri("/{id}")
+		post addProduct(@body ProductInput input) {
+				// Define the query for adding a new product
+			}
+		}
+
+
+type Product {
+    name string "binding:json, required"
+    description string "binding:json, required"
+    price float64 "binding:json, required"
 }
 ```
 
