@@ -16,5 +16,19 @@ func main() {
 }
 
 const input = `@uri("http://example.com/thing")
-endpoint Product {
-`
+			  endpoint Product {
+				@uri("/")
+				get allProducts() {
+					# Define the query for retrieving all products
+				}
+			
+				@uri("/{id}")
+				post addProduct(@body ProductInput input) {
+					# Define the query for adding a new product
+				}
+			}
+			type Product {
+				name string "binding:json, required"
+				description string "binding:json, required"
+				price float64 "binding:json, required"
+			}`

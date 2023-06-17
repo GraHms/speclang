@@ -72,7 +72,15 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = l.readString()
 
 	case '\n':
-		tok = newToken(token.NEWLINE, l.ch)
+		tok.Type = token.NEWLINE
+		tok.Literal = string(l.ch)
+
+	case '#':
+		for l.ch != '\n' && l.ch != 0 {
+			l.readChar()
+		}
+		// Recursively call NextToken to get the next token after the comment
+		return l.NextToken()
 
 	case 0:
 		tok.Literal = ""
@@ -124,15 +132,11 @@ func newToken(tokenType token.TokenType, ch byte) token.Token {
 }
 
 func (l *Lexer) SkipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
-		if l.ch == '\n' {
-			// Tokenize the line break separately
-			l.readChar()
-			return
-		}
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' {
 		l.readChar()
 	}
 }
+
 func (l *Lexer) readNumber() string {
 	position := l.position
 	for isDigit(l.ch) {
