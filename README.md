@@ -1,6 +1,6 @@
 # Speclang
 
-Speclang is a proposed programming language designed specifically for compiling OpenAPI specifications. It aims to simplify the process of working with OpenAPI by providing a concise and expressive syntax that allows developers to define endpoints, models, and annotations more efficiently.
+Speclang is a proposed language designed specifically for compiling OpenAPI specifications. It aims to simplify the process of working with OpenAPI by providing a concise and expressive syntax that allows developers to define endpoints, models, and annotations more efficiently.
 
 ## Why Speclang?
 
