@@ -16,5 +16,5 @@ func main() {
 }
 
 const input = `@uri("http://example.com/thing")
-
+endpoint Product {
 `

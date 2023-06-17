@@ -49,11 +49,11 @@ const (
 
 	// Keywords
 	URI      = "@uri"
-	ENDPOINT = "endpoint"
-	GET      = "get"
-	POST     = "post"
-	PUT      = "put"
-	TYPE     = "type"
+	ENDPOINT = "ENDPOINT"
+	GET      = "GET"
+	POST     = "POST"
+	PUT      = "PUT"
+	TYPE     = "TYPE"
 )
 
 var keywords = map[string]TokenType{
@@ -64,23 +64,9 @@ var keywords = map[string]TokenType{
 	"type":     TYPE,
 }
 
-var annotations = map[string]TokenType{
-	"uri": URI,
-}
-
-// LookupIdentifier checks if the given identifier is a keyword.
-// If it is, it returns the corresponding TokenType.
-// Otherwise, it returns IDENT as the TokenType.
 func LookupIdentifier(identifier string) TokenType {
 	if tok, ok := keywords[identifier]; ok {
 		return tok
 	}
 	return IDENT
-}
-
-func LookupAnnotation(annotation string) TokenType {
-	if tok, ok := annotations[annotation]; ok {
-		return tok
-	}
-	return ANNOTATION
 }
