@@ -48,7 +48,6 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	case '@':
 		tok = newToken(token.ANNOTATION, l.ch)
-		tok.Literal = l.readAnnotation()
 	case '{':
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
@@ -67,9 +66,17 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.SEMICOLON, l.ch)
 	case ':':
 		tok = newToken(token.COLON, l.ch)
+
 	case '"':
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
+
+	case '\n':
+		tok = newToken(token.NEWLINE, l.ch)
+
+	case 0:
+		tok.Literal = ""
+		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
@@ -98,22 +105,15 @@ func isLetterOrDigit(ch byte) bool {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	if l.ch == '@' {
+	for isLetterOrDigit(l.ch) {
 		l.readChar()
-		for isLetterOrDigit(l.ch) || l.ch == ':' {
-			l.readChar()
-		}
-	} else {
-		for isLetterOrDigit(l.ch) {
-			l.readChar()
-		}
 	}
 	return l.input[position:l.position]
 }
 
 func (l *Lexer) readAnnotation() string {
 	position := l.position
-	for isLetterOrDigit(l.ch) || l.ch == ':' {
+	for isLetterOrDigit(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -124,11 +124,15 @@ func newToken(tokenType token.TokenType, ch byte) token.Token {
 }
 
 func (l *Lexer) SkipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' { // skip whitespace
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
+		if l.ch == '\n' {
+			// Tokenize the line break separately
+			l.readChar()
+			return
+		}
 		l.readChar()
 	}
 }
-
 func (l *Lexer) readNumber() string {
 	position := l.position
 	for isDigit(l.ch) {

@@ -18,9 +18,9 @@ const (
 	IDENT      = "IDENT" // add, foobar, x, y, ...
 	INT        = "INT"   // 1234567890
 	STRING     = "STRING"
-	AT         = "@"
 	FLOAT      = "FLOAT"
 	ANNOTATION = "ANNOTATION"
+	NEWLINE    = "NEWLINE"
 
 	// Operators
 	ASSIGN   = "="
@@ -52,15 +52,20 @@ const (
 	ENDPOINT = "endpoint"
 	GET      = "get"
 	POST     = "post"
+	PUT      = "put"
 	TYPE     = "type"
 )
 
 var keywords = map[string]TokenType{
-	"uri":      URI,
 	"endpoint": ENDPOINT,
 	"get":      GET,
 	"post":     POST,
+	"put":      PUT,
 	"type":     TYPE,
+}
+
+var annotations = map[string]TokenType{
+	"uri": URI,
 }
 
 // LookupIdentifier checks if the given identifier is a keyword.
@@ -71,4 +76,11 @@ func LookupIdentifier(identifier string) TokenType {
 		return tok
 	}
 	return IDENT
+}
+
+func LookupAnnotation(annotation string) TokenType {
+	if tok, ok := annotations[annotation]; ok {
+		return tok
+	}
+	return ANNOTATION
 }
