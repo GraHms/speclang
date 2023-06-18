@@ -17,6 +17,12 @@ type Statement interface {
 	statementNode()
 }
 
+// Expression is the interface that all expression nodes implement.
+type Expression interface {
+	Node
+	expressionNode()
+}
+
 // Program represents a "speclang" program.
 type Program struct {
 	Statements []Statement
