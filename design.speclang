@@ -1,0 +1,87 @@
+@uri("/products")
+endpoint Product {
+	@uri("/")
+	get AllProducts() {
+		// Retrieve all products
+		response {
+			200: {
+
+				body: []Product
+			}
+		}
+	}
+
+	@uri("/{id}")
+	get ProductById(id int) {
+		// Retrieve product by ID
+		response {
+			200: {
+				description: "Success",
+				body: Product
+			},
+			404: {
+				description: "Not Found",
+				body: ErrorResponse
+			}
+		}
+	}
+
+	@uri("/")
+	post AddProduct(product ProductInput) {
+		// Add a new product
+		response {
+			201: {
+				description: "Created",
+				body: Product
+			},
+			400: {
+				description: "Bad Request",
+				body: ErrorResponse
+			}
+		}
+	}
+
+	@uri("/{id}")
+	patch UpdateProductById(id int, product ProductInput) {
+		// Update product by ID
+		response {
+			200: {
+				description: "Success",
+				body: Product
+			},
+			404: {
+				description: "Not Found",
+				body: ErrorResponse
+			}
+		}
+	}
+
+	@uri("/{id}")
+	delete DeleteProductById(id int) {
+		// Delete product by ID
+		response {
+			204: {
+				description: "No Content",
+				body: nil
+			},
+			404: {
+				description: "Not Found",
+				body: ErrorResponse
+			}
+		}
+	}
+}
+
+type Product {
+	ID   int    "binding:json, required"
+	Name string "binding:json, required"
+}
+
+type ProductInput {
+	Name string "binding:json, required"
+}
+
+type ErrorResponse struct {
+	Code    int    "binding:json, required"
+	Message string "binding:json, required"
+}

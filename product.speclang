@@ -1,28 +1,15 @@
 
 @uri("/products")
 endpoint Product {
-	@uri("/")
-	get AllProducts() {
-			// Retrieve all products
-	}
 
 	@uri("/{id}")
-	get ProductById(id int) {
+	get ProductById() {
 			// Retrieve product by ID
 	}
 
 	@uri("/")
-	post addProduct(product ProductInput) {
+	post addProduct() {
 			// Add a new product
 	}
+}
 
-	@uri("/{id}")
-	patch updateProductById(id int, product ProductInput) {
-			// Update product by ID
-	}
-
-	@uri("/{id}")
-	delete ProductById(id int) {
-			// Delete product by ID
-		}
-	}

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"speclang/ast"
 	"speclang/lexer"
 	"speclang/parser"
@@ -71,18 +72,29 @@ func GenerateSwaggerSpec(program *ast.Program) string {
 		case *ast.EndpointStatement:
 			endpointURI := currentEndpointURI
 			sb.WriteString("  " + endpointURI + ":\n")
+			var functionParam string
 			for _, innerStmt := range stmt.Block.Statements {
+
 				switch innerStmt := innerStmt.(type) {
 				case *ast.AnnotationStatement:
 					if innerStmt.Name.Value == "uri" {
-						// Store the function URI if needed for further processing
-						// currentFunctionURI = innerStmt.Value.(*ast.StringLiteral).Value
+						functionParam = innerStmt.Value.(*ast.StringLiteral).Value
 					}
 				case *ast.FunctionStatement:
 					sb.WriteString("    " + strings.ToLower(innerStmt.Token.Literal) + ":\n")
 					sb.WriteString("      summary: " + innerStmt.Name.Value + "\n")
 					sb.WriteString("      operationId: " + innerStmt.Name.Value + "\n")
-					sb.WriteString("      parameters:\n")
+					// parse function parameter if {VALUE} is present
+					if strings.Contains(functionParam, "{") {
+						parameters := parsePathParameters(functionParam)
+						sb.WriteString("      parameters:\n")
+						for _, param := range parameters {
+							sb.WriteString("      - name: " + param + "\n")
+							sb.WriteString("        in: path\n")
+							sb.WriteString("        required: true\n")
+							sb.WriteString("        type: string\n")
+						}
+					}
 					// Add parameters here if needed
 					sb.WriteString("      responses:\n")
 					sb.WriteString("        200:\n")
@@ -98,4 +110,14 @@ func GenerateSwaggerSpec(program *ast.Program) string {
 // WriteSwaggerSpec writes the Swagger specification to a file.
 func WriteSwaggerSpec(outputPath string, swaggerSpec string) error {
 	return os.WriteFile(outputPath, []byte(swaggerSpec), 0644)
+}
+
+func parsePathParameters(uri string) []string {
+	re := regexp.MustCompile(`{([^}]*)}`)
+	matches := re.FindAllStringSubmatch(uri, -1)
+	parameters := make([]string, len(matches))
+	for i, match := range matches {
+		parameters[i] = match[1]
+	}
+	return parameters
 }
