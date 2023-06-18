@@ -7,14 +7,15 @@ import (
 )
 
 type Parser struct {
-	lexer   *lexer.Lexer
-	errors  []string
-	curTok  token.Token
-	peekTok token.Token
+	lexer                *lexer.Lexer
+	errors               []string
+	curTok               token.Token
+	peekTok              token.Token
+	mostRecentAnnotation *ast.AnnotationStatement // Track most recent annotation statement
 }
 
 func New(lexer *lexer.Lexer) *Parser {
-	p := &Parser{lexer: lexer, errors: []string{}}
+	p := &Parser{lexer: lexer, errors: []string{}, mostRecentAnnotation: nil}
 	p.nextToken()
 	p.nextToken()
 	return p
@@ -34,6 +35,7 @@ func (p *Parser) Parse() *ast.Program {
 		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
 		}
+		p.expectPeek(token.NEWLINE)
 		p.nextToken()
 	}
 
@@ -44,10 +46,13 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.curTok.Type {
 	case token.ANNOTATION:
 		return p.parseAnnotationStatement()
+	case token.ENDPOINT:
+		return p.parseEndpointStatement()
 	default:
-		p.addError("Invalid statement")
+		p.addError("Expected statement, got " + p.curTok.Literal + " instead")
 		return nil
 	}
+
 }
 
 func (p *Parser) parseAnnotationStatement() ast.Statement {
@@ -76,7 +81,7 @@ func (p *Parser) parseAnnotationStatement() ast.Statement {
 	if !p.expectPeek(token.RPAREN) {
 		return nil
 	}
-
+	p.mostRecentAnnotation = stmt
 	return stmt
 }
 

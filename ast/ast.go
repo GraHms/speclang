@@ -46,28 +46,23 @@ func (p *Program) String() string {
 
 // EndpointStatement represents an endpoint declaration in "speclang".
 type EndpointStatement struct {
-	Token   token.Token
-	Path    string
-	Methods []MethodStatement
+	Token token.Token
+	URI   *StringLiteral
+	Name  *Identifier
+	Block *BlockStatement
 }
 
 func (es *EndpointStatement) statementNode()       {}
 func (es *EndpointStatement) TokenLiteral() string { return es.Token.Literal }
 func (es *EndpointStatement) String() string {
 	var out bytes.Buffer
-
-	out.WriteString("@uri(\"")
-	out.WriteString(es.Path)
-	out.WriteString("\")\n")
-	out.WriteString("endpoint {\n")
-
-	for _, method := range es.Methods {
-		out.WriteString(method.String())
-		out.WriteString("\n")
-	}
-
-	out.WriteString("}")
-
+	out.WriteString("@endpoint ")
+	out.WriteString(es.URI.String())
+	out.WriteString(" ")
+	out.WriteString(es.Name.String())
+	out.WriteString(" {\n")
+	out.WriteString(es.Block.String())
+	out.WriteString("\n}")
 	return out.String()
 }
 

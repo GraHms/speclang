@@ -1,17 +1,27 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"speclang/lexer"
-	"speclang/token"
+	"speclang/parser"
 )
 
 func main() {
 	lex := lexer.New(input)
-	tokens := []token.Token{}
-	for tok := lex.NextToken(); tok.Type != token.EOF; tok = lex.NextToken() {
-		tokens = append(tokens, tok)
-		fmt.Printf("%+v\n", tok)
+
+	p := parser.New(lex)
+	program := p.Parse()
+
+	for _, stmt := range program.Statements {
+		println(stmt.String())
+	}
+
+}
+
+func printParserErrors(out io.Writer, errors []string) {
+	for _, msg := range errors {
+
+		_, _ = io.WriteString(out, "\t"+msg+"\n")
 	}
 }
 
