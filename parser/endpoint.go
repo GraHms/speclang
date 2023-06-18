@@ -20,7 +20,7 @@ func (p *Parser) parseEndpointStatement() ast.Statement {
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
-	stmt.Block = p.parseBlockStatement()
+	stmt.Block = p.parseEndpointBlock()
 
 	return stmt
 }

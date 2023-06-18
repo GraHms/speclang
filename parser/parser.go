@@ -48,6 +48,17 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseAnnotationStatement()
 	case token.ENDPOINT:
 		return p.parseEndpointStatement()
+	case token.GET:
+		return p.parseFunctionStatement()
+	case token.POST:
+		return p.parseFunctionStatement()
+	case token.PUT:
+		return p.parseFunctionStatement()
+	case token.DELETE:
+		return p.parseFunctionStatement()
+	case token.PATCH:
+		return p.parseFunctionStatement()
+
 	default:
 		p.addError("Expected statement, got " + p.curTok.Literal + " instead")
 		return nil

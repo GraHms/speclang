@@ -5,8 +5,6 @@ import (
 	"speclang/token"
 )
 
-// ... (Previous code)
-
 func (p *Parser) parseFunctionStatement() ast.Statement {
 	stmt := &ast.FunctionStatement{Token: p.curTok}
 
@@ -75,5 +73,3 @@ func (p *Parser) parseParameter() *ast.Parameter {
 
 	return param
 }
-
-// ... (Remaining code)

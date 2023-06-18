@@ -33,9 +33,10 @@ const input = `@uri("http://example.com/thing")
 				}
 			
 				@uri("/{id}")
-				post addProduct(@body ProductInput input) {
-					# Define the query for adding a new product
+				post product() {
+                   # Define the query for retrieving a single product
 				}
+				
 			}
 			type Product {
 				name string "binding:json, required"
