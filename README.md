@@ -1,7 +1,6 @@
 # Speclang
 
-Speclang is a proposed language designed specifically for compiling OpenAPI specifications. It aims to simplify the process of working with OpenAPI by providing a concise and expressive syntax that allows developers to define endpoints, models, and annotations more efficiently.
-
+Speclang is a domain-specific language (DSL) designed for defining API specifications. It allows developers to describe API endpoints, data models, annotations, and other relevant details using a custom syntax. The goal of Speclang is to provide a concise and expressive way to define API contracts, enabling different teams to manage a single API specification without modifying a shared file.
 ## Why Speclang?
 
 - **Improved Developer Experience**: Speclang's syntax is developer-friendly and intuitive, reducing boilerplate code and providing a streamlined way to define endpoints and models.
