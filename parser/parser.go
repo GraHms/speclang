@@ -58,6 +58,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseFunctionStatement()
 	case token.PATCH:
 		return p.parseFunctionStatement()
+	case token.TYPE:
+		return p.parseTypeStatement()
 
 	default:
 		p.addError("Expected statement, got " + p.curTok.Literal + " instead")

@@ -13,3 +13,16 @@ endpoint Product {
 	}
 }
 
+type Product {
+	ID   int    "binding:json, required"
+	Name string "binding:json, required"
+}
+
+type ProductInput {
+	Name string "binding:json, required"
+}
+
+type ErrorResponse struct {
+	Code    int    "binding:json, required"
+	Message string "binding:json, required"
+}
